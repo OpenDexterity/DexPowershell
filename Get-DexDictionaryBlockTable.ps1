@@ -40,7 +40,6 @@ function Get-DexDictionaryBlockTable {
         #vars
         [UInt32]$tblOffset = 0
         [UInt32]$tblSize = 0
-        #[PSCustomObject[]]$records = @()
         $stopwatch = New-Object -TypeName System.Diagnostics.Stopwatch
     }
 
@@ -64,13 +63,13 @@ function Get-DexDictionaryBlockTable {
             #directly putting the results of the loop into $records takes about 790 ticks (0.079 ms) per record
             #using a .net collection and the .Add() function takes about 1650 ticks (0.165 ms) per record
             #using a powershell array and the += operator takes about 2130 ticks (0.213 ms) per record
-            ([PSCustomObject]@{
+            [PSCustomObject]@{
                 BlockNumber = $blkNum
                 BlockType = $reader.ReadUInt16()
                 StartOffset = $reader.ReadUInt32()
                 Size = $reader.ReadUInt32()
                 UnusedSpace = $reader.ReadUInt32()
-            }) #| Out-Null
+            }
             $blkNum++
         }
 
