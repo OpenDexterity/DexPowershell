@@ -6,7 +6,8 @@ PowerShell module that can perform actions with Dexterity files.
 
 * Windows 10 or Windows Server 2016 and newer are recommended. Module has not been tested on Linux, macOS, or older versions of Windows so your mileage may vary.
 * PowerShell 5.1 or later (included in Windows by default since Windows 10 1607 and Windows Server 2016)
-* Administrator privileges *if operating on dictionaries in the GP or Dexterity install folders*
+
+*Note: Administrator privileges may be required if operating on dictionaries in the GP or Dexterity install folders*
 
 # Installation
 
