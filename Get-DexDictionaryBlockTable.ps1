@@ -23,7 +23,7 @@ function Get-DexDictionaryBlockTable {
             Test-DexDictionaryHeader -Path $_
             return $true
         })]
-        $Path
+        [string]$Path
     )
 
     BEGIN {

@@ -34,7 +34,7 @@ function Test-DexDictionaryHeader {
                 throw "Specified file does not have .dic or .cnk extension."
             }
         })]
-        $Path
+        [string]$Path
     )
 
     BEGIN {
