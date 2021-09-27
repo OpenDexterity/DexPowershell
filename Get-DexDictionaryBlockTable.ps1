@@ -10,7 +10,7 @@ function Get-DexDictionaryBlockTable {
         .INPUTS
         Path to a Dexterity dictionary (.dic) or chunk dictionary (.cnk)
         .OUTPUTS
-        PSCustomObject[]
+        DexDictionaryBlockTable
         .NOTES
         Created by Sean Cale, September 2021
     #>
@@ -59,11 +59,11 @@ function Get-DexDictionaryBlockTable {
         #reading the records
         $tblSizeBytes = $tblSize * 0xe #block table records are 0xe bytes in size
         [UInt32]$blkNum = 1
-        [PSCustomObject[]]$records = for ($i = 0; $i -lt ($tblSizeBytes); $i += 0xe) {
+        [DexDictionaryBlock[]]$records = for ($i = 0; $i -lt ($tblSizeBytes); $i += 0xe) {
             #directly putting the results of the loop into $records takes about 790 ticks (0.079 ms) per record
             #using a .net collection and the .Add() function takes about 1650 ticks (0.165 ms) per record
             #using a powershell array and the += operator takes about 2130 ticks (0.213 ms) per record
-            [PSCustomObject]@{
+            [DexDictionaryBlock]@{
                 BlockNumber = $blkNum
                 BlockType = $reader.ReadUInt16()
                 StartOffset = $reader.ReadUInt32()
@@ -84,6 +84,11 @@ function Get-DexDictionaryBlockTable {
         Write-Verbose "Done. Processed $tblSize records in $($stopwatch.ElapsedTicks) ticks, or $($stopwatch.ElapsedMilliseconds) ms."
         Write-Verbose "$($stopwatch.ElapsedTicks / $tblSize) ticks per record, $($stopwatch.ElapsedMilliseconds / $tblSize) ms per record."
 
-        return $records
+        return [DexDictionaryBlockTable]@{
+            Path = $Path
+            Blocks = $records
+            TableOffset = $tblOffset
+            TableLength = $tblSize
+        }
     }
 }
